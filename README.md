@@ -1,2 +1,0 @@
-# practise
-some simple code
