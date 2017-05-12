@@ -32,7 +32,7 @@ List（）【返回一个列表】
 调取：movie[1：3]-->B【其中0为第一行，-1为最后一行】  
 嵌套列表调取：movie[1][2][1]-->"c"  
 列尾增加：movie.append("k")-->movie=["A","B","c","k"]  
-列尾增加集合：movie.extend(["q","w"])-->movie=["A","B","c","q","w"]  
+列尾增加集合：movie.extend(["q","w"])-->movie=["A","B","c","q","w"] 【原地操作，不返回list】 
 列尾减少：movie.pop（）-->movie=["A","B","c"]  
 特定位置之前增加：movie.insert(0，"l")-->movie=["l","A","B","c"]  
 指定项删除：movie.remove("c")-->movie=["A","B"]  
@@ -213,7 +213,7 @@ With语句：with open（“sd.txt”） as data【不用close】
 
     With open（“sd.txt”,“rb”）as data2
 	Data3=pickle.load（data2）
-## 错误处理 ##：(可以当做省略条件的if使用)
+## 错误处理 ##
 **Try/except/finally模式  **  
     try:  
     	【需要尝试保护的代码】  
@@ -244,8 +244,14 @@ print "/".join(str)-->aa/bb/cc
 **replace**：str.replace(old, new[, max])  
 str = "this is string example....wow!!! this is really string";  
 print str.replace("is", "was", 3);【替换不超过max次】-->  
-thwas was string example....wow!!! thwas is really string  
+thwas was string example....wow!!! thwas is really string    
 
+str.maketrans()&translate（）:  
+
+    trantab=str.maketrans(input,output)  `
+    print (raw.translate(trantab))  
+【先建立一个转换table，用maketrans设定后，用translante进行转换】
+    
 **列表**  
 **count**:str.count(sub, start= 0,end=len(string))【返回sub在字符串中出现的次数】  
 
