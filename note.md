@@ -40,6 +40,7 @@ List（）【返回一个列表】
 复制排序：data2=sorted(data)  
 ### 计算和参数 ###
 **【乘方】；//【整除】；%【余数】  
+divmod:divmod(12,7)-->(1,5)【整除返回商和余数的元组】  
     Import math  
     Math.pi；math.cos,sin,tan  
     Math.pi/6=30°  
@@ -226,15 +227,29 @@ With语句：with open（“sd.txt”） as data【不用close】
 ## 对象操作 ##
 **字符串**  
 *：A*3-->AAA  
-Capitalize：aASaDs .Capitalize()-->Aasads  
-Center（居中）:  
+**Capitalize**：aASaDs .Capitalize()-->Aasads  
+**Center**（居中）:str.center(width,"sep")
 Str=kkk  
-Str.center(5,”a”)akkka  
+Str.center(5,”a”)-->akkka  
 ljust（左对齐）/rjust（右对齐）  
-find：str.find（”f”）【无值返回-1】  
-str.startswith(“”)/.endswith()【检查字符串是否以某字符串结尾，返回bool值】  
+**find**：str.find（”f”）【无值返回-1】  
+**str.startswith**(“”)/.endswith()【检查字符串是否以某字符串结尾，返回bool值】  
+**isalpha**【是否都是字母】/isdigit【是否都是数字】/isalnum【数字和字母混合】【非list】  
+**join**：(sep).join(str.list)  
+str=["aa","bb","cc"]  
+print "/".join(str)-->aa/bb/cc  
+**splitlines**("keepend")【按照换行符切割】  
+**partition**:str.patition("sep")【只运行到第一次分割，返回三个对象：分割的子字符串、分隔符和剩余字符串】  
+**strip**("sep")/lstrip()/rstrip()【从字符串两端移除空白，也可移除相应的字符串】  
+**replace**：str.replace(old, new[, max])  
+str = "this is string example....wow!!! this is really string";  
+print str.replace("is", "was", 3);【替换不超过max次】-->  
+thwas was string example....wow!!! thwas is really string  
 
+**列表**  
+**count**:str.count(sub, start= 0,end=len(string))【返回sub在字符串中出现的次数】  
 
+**字典**  
 
 
 
