@@ -19,6 +19,9 @@ pass
     print(s1.safe_substitute(who=’tim’,what=’kun’))  
 【safe_substitute和substitute的区别：如果输入有缺值，safe会将原值直接输出，substitute会报错】 
 
+**re模块**  
+re.findall(pattern,str)【findall会从头按照pattern开始进行匹配，并逐个返回符合的字符串。使用前设定pattern】  
+
 ## 数据统计和处理 ##
 输入：name=input（）  
 输入：name=raw_input()【两者区别：input输入的数值中如果为纯数字，返回int类型。raw_仅返回str类型】  
@@ -90,6 +93,8 @@ Abs()【绝对值】
 Max()；min()  
 Bool()【数字只有0为false，其他为true】  
 Hex()【将整数转变为16进制】  
+chr（）【将ASCII码转变为字符】
+ord（）【将字符转变为ASCII码】
 换行：\n；制表符：\t  
 ## 函数内部控制 ##
 ### 迭代 ###
@@ -191,8 +196,17 @@ sorted（[],key=f,reverse=True）【key为函数，reverse反转顺序。sorted�
 ### 匿名函数 ###
 K=reduce(lambda x,y:x*y,[1,2,3,4,5])120【格式为lambda x：f，用于简单函数命名】  
 ## 文件处理 ##
+打开和读取：
 Data=open(‘ds.txt’，“w”)【w为覆盖写入模式，a为追加写入模式，默认为仅读取】【在非仅读取模式下，如果目录中没有该文件，open可以直接创建】  
-写入：print（“asd”，file=data）【屏幕标准输出：file=sys.stdout】  
+with open（“sd.txt”） as data【不用close】  
+read()【整体读取，直到末尾，作为字符串返回】  
+readlines（）【读取所有行，并把其作为字符串列表返回】  
+readline（）【读取一行，作为字符串返回】  
+写入：  
+print（“asd”，file=data）【屏幕标准输出：file=sys.stdout】      
+data.writeline(item):【写完换行】  
+write（）：【写完不换行】  
+
 刷新输出（文件关闭）：Data.close()【文件不存在时错误】  
 print（x，end=’ ‘）【end取消默认结尾回车】  
 返回文件起始位置：data.seek（0）  
@@ -200,7 +214,7 @@ print（x，end=’ ‘）【end取消默认结尾回车】
 分割：split（“：”，1）【1表示分为两部分】  
 寻找：find（“：”）【找不到返回-1，找到返回索引值】  
 逻辑等于：==  
-With语句：with open（“sd.txt”） as data【不用close】  
+
 **os模块**  
 获得当前工作目录：getcwd（）【current working directory】  
 改当前工作目录为：chdir（’’）【注意加双单引】【change directory】  
@@ -256,7 +270,20 @@ str.maketrans()&translate（）:
 **count**:str.count(sub, start= 0,end=len(string))【返回sub在字符串中出现的次数】  
 
 **字典**  
+**get**(key, default=None)【当键值不存在时返回default值】  
+**pop**（key）  
+**clear**【清除字典的内容】  
 
+**集**  
+a=set（）【设定空集】  
+frozenset【不可变集，内容不可变，只支持一部分集操作】  
+a={1,2,3,4,5}【注意和字典的区别】  
+s.**issubset**(x)【集s是否是集x的子集，返回bool值】  
+**s^x**【返回不在两者交集中的所有元素】  
+**s-x**【返回在集合s中有，x没有的元素】  
+**discard**【移除元素】  
+**pop**【随机移除元素】 
+**clear**【清除集元素】 
 
 
  
@@ -269,3 +296,6 @@ str.maketrans()&translate（）:
 4.str（），abs（），float（）算作是函数  
 5.字典中的value一定是可以计算的float或int。  
 6.生成器本身可以代表一个列表，所以用生成器进行的运算都具有map（f，[]）的效果，如generator%n==map[lambda x，y：x%y，generator]。（多用生成器，少创建列表）  
+7.打开文件后，使用其中一种read()类型函数（readline、readlines、read）时，不能使用另一种read()类型函数。重开文件后可重新使用。
+8.[a-z][A-Z]表示大写字母和小写字母
+
