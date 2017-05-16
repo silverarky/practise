@@ -33,12 +33,14 @@ List（）【返回一个列表】
 原地排序：data.sort()【默认升序，参数reverse=TRUE降序】  
 复制排序：data2=sorted(data)  
 ### 计算和参数 ###
-**【乘方】；//【整除】；%【余数】  
+**【乘方】；//【整除】；%【余数】；~【取反，结果和原值的和为-1】
 divmod:divmod(12,7)-->(1,5)【整除返回商和余数的元组】  
     Import math  
     Math.pi；math.cos,sin,tan  
-    Math.pi/6=30°  
+    Math.pi/6=30°   
 
+pow（a,b,c）【相当于（a**b）%c】
+cmp（a,b）【如果a<b返回负整数，a=b返回0，a>b返回正整数】
 num=[1,2,3]  
 calc(*num)【将num中的元素作为可变参数输入，为tuple，也可以在定义函数时将参数定义为可变参数】  
 calc（**num）【关键字参数，为dict，可以接收除可变和不变参数外多个信息。输入具体数值时需加上参数名，x=“asd”】  
@@ -85,13 +87,15 @@ getattr(obj,"y"，404)-->19【获取属性y，如果属性不存在返回默认�
 ## 数据类型 ##
 Float()【转换为浮点数】  
 Str()【转换为字符串】  
+coerce（a,b）【将b转变为a的类型，返回tuple】
 b=a.replace（”a”,”A”）【将字符串中的某个字符进行更改,但是变化过后a不变，只能讲变化结果赋值给其他对象】  
 ‘asdfghjl’[:3]-->asd【str也可以看作是一个list进行切片操作】  
 Int(item,base=2)【转换为整数类型,2进制。default base=10】  
 Abs()【绝对值】  
 Max()；min()  
-Bool()【数字只有0为false，其他为true】  
-Hex()【将整数转变为16进制】  
+Bool()【数字只有0为false，其他为true】 
+oct()【将整数转变为8进制】 
+hex()【将整数转变为16进制】  
 chr（）【将ASCII码转变为字符】  
 ord（）【将字符转变为ASCII码】  
 换行：\n；制表符：\t  
@@ -99,6 +103,12 @@ ord（）【将字符转变为ASCII码】
     import types  
     type(f)==type.FunctionType
 【判断是否是函数类型】
+
+**random模块**【返回伪随机数】  
+randrange【参数和range一样，随机返回范围内的数。给变量赋值后无效】  
+uniform（min，max）【返回浮点数】  
+random（）【注意开头小写，返回0.0-1.0之间的浮点数】  
+
 ## 函数内部控制 ##
 ### 迭代 ###
     **for** x in movie：  
@@ -143,7 +153,7 @@ nester.lol(x)
 
 **导入模块**  
 import.nester  
-from nester import lol(添加模块到当前命名空间)  
+from nester import lol as L【添加模块到当前命名空间】【简化函数名】
 
 **生成器**  
     Def odd():  
