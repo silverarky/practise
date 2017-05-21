@@ -57,6 +57,9 @@ x={“name”:[“a”，“b”，“c”],“occupation”:[“c”，“d”�
 【可以在函数内部返回字典项后，在外部定义字典名】  
 d.get(“tos”,-1)【检查“tos”的key是否在dict中，不存在返回-1】  
 for key，value in x【字典键，值迭代】  
+
+----------
+
 ### 类 ###
     Class Athlete：
     	Def__init__(self,x,y)：
@@ -68,32 +71,98 @@ for key，value in x【字典键，值迭代】
     	Def tops（self）
     		【类下方法定义】【子类重新定义的函数，会将父类的函数覆盖】
 
-	def top():  
-		pass【外部定义函数】  
+		def top():  
+			pass【外部定义函数】  
 	student.top=top【将外部函数绑定到实例，成为仅属于该instance的方法，但是不绑定到class】
 	from types import MethodType
 	student.top=MethodType(top,student)【将外部函数绑定到instance，成为属于class的方法】
 	
-
     D=Athelete(x,c)【D对应self，x,c对应x，y】【定义类】
     D.tops()【类下方法调用】
     Class Athlete（list）：【继承类】【多态：继承的子类拥有父类的type（既是Athlete也是list）】
     	Def__init__(self,name)
-    List.__init__([])【将继承的类初始化】  
+    	List.__init__([])【将继承的类初始化】  
+	class MyTCPServer（TCPserver，FockingMixIn）：
+		pass【使用MixIn进行多重继承，如果继承的关系不是纯粹的上下关系，而是并行关系，可以使用MixIn添加新类的额外功能。】【使用MixIn时，如果不同父类之间继承的方法有重复，子类会选择第一个继承的方法】
 
-    @property【将一个方法作为属性调用】【getter】
-    def width(self):
-		return self.__width
-	@width.setter【使用property后创建的装饰器，如果不设定setter，属性就为只读对象】
-	def width(self,value):
-		self.__value=value
-		
+    	@property【将一个方法作为属性调用】【getter】
+    	def width(self):
+			return self.__width
+		@width.setter【使用property后创建的装饰器，如果不设定setter，属性就为只读对象】
+		def width(self,value):
+			self.__value=value
+		@width.deleter
+		def width(self):
+		del self.width【使用时输入del obj.width】
 	
+		width=property(fget,fset,fdel)【可以用property指定get、set、del的函数，设定fget为none为该属性无法读取】
+		
 【定义的类和str、int这些type是相似的】  
 对象属性和方法测试：【不知道的情况下使用，能用obj.x就不用getattr（obj,"x"）】  
 hasattr(obj,"x")-->True【判断属性：是否有属性x（self.x）或方法x】  
 setattr(obj,"y",19)【设定属性：obj.y=19】  
-getattr(obj,"y"，404)-->19【获取属性y，如果属性不存在返回默认值404】【y也可以是类中方法，结果是获取方法】
+getattr(obj,"y"，404)-->19【获取属性y，如果属性不存在返回默认值404】【y也可以是类中方法，结果是获取方法】  
+
+**定制类**  
+
+    class person:
+    	def __init__(self,name,gender):
+        	self.name=name
+        	self.gender=gender
+
+    	def __str__(self):【当从外部直接使用print（instance）的时候，通过__str__方法优化输出】
+        	return"person: %s, %s" %(self.name,self.gender)
+		__repr__=__str__【当从外部直接输出instance时，通过__repr__优化输出。通过=方法避免重复定义】
+	print(p)
+	p
+
+    class fib():
+    	def __init__(self):
+    		self.a,self.b=0,1
+    
+    	def __iter__(self):【迭代器，将类作为可迭代对象，可在外部使用迭代方法】
+    		return self【如果需要使用类进行迭代，需要定义__iter__方法，实例本身为迭代对象时返回self】
+    
+    	def __next__(self):【每次调用类时，返回迭代器的下一个数值】
+    		self.a,self.b=self.b,self.a+self.b
+    		if self.a>100000:
+    			raise StopIteration()
+    		return self.a
+	for i in Fib():
+		print(i)
+    
+    class fib():
+		def __getitem__(self.n):【生成器，将类作为list使用，可使用切片方法，n为之后的切片】	
+    	if isinstance(n,int):
+            a,b=1,1
+            for x in range(n):
+                a,b=b,a+b
+        return a
+        if isinstance(n,slice):【n有可能是整数也有可能是slice对象】
+            start=n.start【slice对象有start和stop两个属性，对应冒号前后，可直接调用】
+            stop=n.stop
+            if start is None:
+                start=0
+            a,b=1,1
+            L=[]
+            for x in range(stop):
+                if x>=start:
+                    L.append(a)
+                a,b=b,a+b
+                return L
+	fib()[0]=1
+	fib()[1:3]=
+
+    class Chain(object):
+    	def __init__(self, path=''):
+        	self._path = path
+    	def __getattr__(self, path):【当没有找到属性时，会调用__getattr__，使path=status。默认返回none】
+        	return Chain('%s/%s' % (self._path, path))【如果出现链式调用属性，当前一个属性调用后即消失】
+    	def __str__(self):
+        	return self._path
+    	__repr__ = __str__
+	Chain().status.user.timeline.list-->'/status/user/timeline/list'
+
 
 ## 数据类型 ##
 Float()【转换为浮点数】  
