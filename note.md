@@ -357,14 +357,37 @@ print("%d*%d=%d" %(i,j,i*j))【format格式的输出】
 分割：split（“：”，1）【1表示分为两部分】  
 寻找：find（“：”）【找不到返回-1，找到返回索引值】  
 
+**io模块**  
+from io import StringIO()  
+d=StringIO("hello world!")【在内存中写入字符串】  
+print（d.getvalue()）【obj.getvalue方法读取内存中对象内容】  
+【操作在内存中的字符串时，read相关方法不会将stream position归零，需要用obj.seek（0）将位置归零】  
+
 **pprint模块**  
 pprint.pprint(res)【更加美观的输出，能够从控制器的输出较直观的发现数据之间的关系】
 
 **os模块**  
-获得当前工作目录：getcwd（）【current working directory】  
-改当前工作目录为：chdir（’’）【注意加双单引】【change directory】  
-检查文件是否存在：path.exists(“sd.txt”)  
-列出当前目录下的所有文件和目录名：.listdir('.')  
+系统名称：name   
+环境变量：environ   
+获取环境变量：environ.get("key")  
+获得当前工作目录：getcwd（）【current working directory】    
+改当前工作目录为：os.chdir（""）【change directory】  
+拆分路径：os.path.split（"/Users/michael/testdir/file.txt"）【会将最后一个/后的名称进行拆分】  
+创建目录：os.mkdir("")  
+删除目录：os.rmdir（""）  
+删除文件：os.remove（""）  
+重命名文件：os.rename（"past name","present name"） 
+列出当前目录下的所有文件和目录名：os.listdir('.')   
+当前目录的绝对路径：os.path.abspath（"."）  
+表示完整路径：os.path.join("/Users/michael","testdir")【创建新路径时要用join将完整路径表示出来，再用mkdir】     
+检查文件是否存在：os.path.exists(“sd.txt”)     
+判断是否是目录：os.path.isdir()  
+判断是否是文件：os.path.isfile()  
+[x for x in os.path.isfile(x) and os.path.splitext(x)[1]=='.py']【列出当前目录下所有py文件】  
+【path.splitext返回路径名和文件扩展名的元组】  
+
+**shutil模块**  
+
 **Pickle模块**【解决同文件数据格式不同问题】 
 
     With open（“sd.txt”,“wb”）as data【b表示二进制】
