@@ -370,14 +370,15 @@ pprint.pprint(res)【更加美观的输出，能够从控制器的输出较直�
 系统名称：name   
 环境变量：environ   
 获取环境变量：environ.get("key")  
+获取进程id：os.getpid()
 获得当前工作目录：getcwd（）【current working directory】    
 改当前工作目录为：os.chdir（""）【change directory】  
-拆分路径：os.path.split（"/Users/michael/testdir/file.txt"）【会将最后一个/后的名称进行拆分】  
 创建目录：os.mkdir("")  
 删除目录：os.rmdir（""）  
 删除文件：os.remove（""）  
 重命名文件：os.rename（"past name","present name"） 
-列出当前目录下的所有文件和目录名：os.listdir('.')   
+列出当前目录下的所有文件和目录名：os.listdir('.') 
+拆分路径：os.path.split（"/Users/michael/testdir/file.txt"）【会将最后一个/后的名称进行拆分】    
 当前目录的绝对路径：os.path.abspath（"."）  
 表示完整路径：os.path.join("/Users/michael","testdir")【创建新路径时要用join将完整路径表示出来，再用mkdir】     
 检查文件是否存在：os.path.exists(“sd.txt”)     
@@ -388,7 +389,7 @@ pprint.pprint(res)【更加美观的输出，能够从控制器的输出较直�
 
 **shutil模块**  
 
-**Pickle模块**【解决同文件数据格式不同问题】 
+**Pickle模块**【序列化】 【只能用于保存不重要的数据】  
 
     With open（“sd.txt”,“wb”）as data【b表示二进制】
 	pickle.dump（obj，file）【将对象序列化保存】
@@ -396,6 +397,12 @@ pprint.pprint(res)【更加美观的输出，能够从控制器的输出较直�
     With open（“sd.txt”,“rb”）as data2
 	Data3=pickle.load（data2）【反序列化读取】
 	Data3=pickle.Unpickler（data2）.load()【Unpickler，反序列化,调用文件的read方法，等于上面】  
+
+**json模块**【通用的序列化方法】  
+
+	json.dump(obj,data,default=lambda obj:obj.__dict__)【用class自身的dict属性储存instance】  
+	json.load(obj) 
+
 ## 网页处理 ##
 **request模块**  
 html=request.get("URL")【获取网页】  
@@ -465,6 +472,31 @@ CRITICAL：一个严重的错误,这表明程序本身可能无法继续运行
 
 需要测试的有init，key、attribute、error
 
+## 进程与线程 ##
+**multiprocessing模块**  
+
+    import multiprocessing as mp
+    obj=mp.Process(target=,args=())【将对象指定为子进程对象】【target指定执行函数，args指定函数传入参数】  
+    obj.start()  
+    obj.join(timeout)【等待子进程结束后在向下运行，用于进程间的同步】【timeout设置超时时间】
+	obj.terminate（）
+
+	mp.pool【进程池，用于启动多个子进程】
+	obj = Pool(4)【限制运行的子进程量】
+	obj.mp.Pool.apply_async(f,args=(","))【向进程池提交目标请求】【非阻塞】
+	obj.mp.Pool.apply【阻塞】 
+	obj.close()【调用close后不产生新的进程】
+
+	mp.Queue(size)【进程间通信】
+	q=Queue()
+	q.put(value)【在Queue中放入数据】
+	num=q.get(True)【按顺序一个一个读取Queue中数据】
+	【Queue只能指定2个子进程分别进行读和写，指定后其他子进程无法进行读和写】  
+
+**time模块** 
+time.sleep(x)【将运行进程休眠x秒】
+t=time.time（）【当前时间，可用于时间加减运算】
+time.ctime()【返回当前时间】
 
 ## 对象操作 ##
 dir（obj）【获得操作该对象的所有方法和属性】
