@@ -127,7 +127,7 @@ type(Athlete,(object),dict(hello=fn))【创建Athlete类对象;名称，继承�
     	def __next__(self):【每次调用类时，返回迭代器的下一个数值】
     		self.a,self.b=self.b,self.a+self.b
     		if self.a>100000:
-    			raise StopIteration()
+    			raise StopIteration()【当while True时，可以返回程序起始点】
     		return self.a
 	for i in Fib():
 		print(i)
@@ -225,6 +225,7 @@ ord（）【将字符转变为ASCII码】
 randrange【参数和range一样，随机返回范围内的数。给变量赋值后无效】  
 uniform（min，max）【返回浮点数】  
 random（）【注意开头小写，返回0.0-1.0之间的浮点数】  
+random.randint(10,20)【生成一个指定范围的整数】
 
 ## 函数内部控制 ##
 ### 迭代 ###
@@ -378,7 +379,7 @@ pprint.pprint(res)【更加美观的输出，能够从控制器的输出较直�
 删除文件：os.remove（""）  
 重命名文件：os.rename（"past name","present name"） 
 列出当前目录下的所有文件和目录名：os.listdir('.') 
-拆分路径：os.path.split（"/Users/michael/testdir/file.txt"）【会将最后一个/后的名称进行拆分】    
+拆分路径：os.path.split（"/Users/michael/testdir/file.txt"）【会将最后一个/后的名称进行拆分】【[0]为需要的路径】      
 当前目录的绝对路径：os.path.abspath（"."）  
 表示完整路径：os.path.join("/Users/michael","testdir")【创建新路径时要用join将完整路径表示出来，再用mkdir】     
 检查文件是否存在：os.path.exists(“sd.txt”)     
@@ -473,6 +474,8 @@ CRITICAL：一个严重的错误,这表明程序本身可能无法继续运行
 需要测试的有init，key、attribute、error
 
 ## 进程与线程 ##
+【多进程耗空间，但是节省时间，而且不容易假死】  
+【多线程节省空间，但是浪费时间，且容易假死，不用跨进程边界传递信息】  
 **multiprocessing模块**  
 
     import multiprocessing as mp
@@ -492,6 +495,51 @@ CRITICAL：一个严重的错误,这表明程序本身可能无法继续运行
 	q.put(value)【在Queue中放入数据】
 	num=q.get(True)【按顺序一个一个读取Queue中数据】
 	【Queue只能指定2个子进程分别进行读和写，指定后其他子进程无法进行读和写】  
+	mp.cpu_count()【计算cpu的数量】
+    --------------------------------------------------------------
+	【分布式进程】
+	import queue
+	task_queue=queue.Queue()
+	mp.Manager.BaseManager【分布式进程需要用到的类】
+	class QueueManager(BaseManager):【只从网络上获取Queue】
+		pass
+	【主manager】
+	QueueManager.register("get_task_queue",callable=lambda：task_queue)【register：BaseManager自带方法,将get_task_queue注册到manager中，并将其与task_queue关联】
+	QueueManager.register("get_result_queue",callable=lambda:result_queue)【需要分别设置get和put的queue】
+	m=QueueManager（address=（ip，port），authkey=）【address，authkey：BaseManager自带属性，设置连接地址和验证码】
+	m.start()【启动Queue】
+	task=manager.get_task_queue()【设置manager中的代理序列】
+	result=manager.get_result_queue()
+	task.put(obj)
+	r=result.get(timeout=10)
+	manager.shutdown()【关闭manager】
+	【分布manager】
+	m=QueueMnager(address=(ip,port),authkey=)【指定manager】
+	m.connect()【连接到网络相应地址的Queue】
+	task=m.get_task_queue()
+	result=m.get_result_queue()
+	n=task.get(timeout=)
+	put.result(obj)
+	
+	
+	
+	
+
+**threading模块**  
+	
+	local=threding.local()【创建全局Threadinglocal对象】
+	local.key=value【local.key对象的存入】
+	obj=local.key【local.key对象的取出】
+	【在LocalThread中，每一个线程都拥有对应的局部属性，即使属性相同也互不影响】
+
+    lock=threading.Lock()【创建锁】【线程的变量共享，设置锁可以避免线程交叉改变量】
+    lock.acquire()【获取锁】【当一个线程获取锁时，其他线程不能获取】【注意死锁】  
+    lock.release()【释放锁】【当一个线程调用的函数结束时，需要释放锁让其他线程获取】  
+
+    threading.current_thread().name【返回当前线程名】【主线程的线程名为Mainthread】  
+    t=threading.thread(target=loop,name="LoopThread")【设置线程】  
+    t.start  
+    t.join  
 
 **time模块** 
 time.sleep(x)【将运行进程休眠x秒】
@@ -510,12 +558,12 @@ Str.center(5,”a”)-->akkka
 ljust（左对齐）/rjust（右对齐）  
 **find**：str.find（”f”）【无值返回-1】  
 **str.startswith**(“”)/.endswith()【检查字符串是否以某字符串结尾，返回bool值】  
-**isalpha**【是否都是字母】/isdigit【是否都是数字】/isalnum【数字和字母混合】【非list】  
-**join**：(sep).join(str.list)【一定要定义之前sep，不然"name 'join' is not define."】
+**isalpha**【是否都是字母】/isdigit【是否都是数字】/isalnum【数字和字母混合】/isspace【空格】【非list】   
+**join**：(sep).join(str.list)【一定要定义之前sep，不然"name 'join' is not define."】  
 str=["aa","bb","cc"]  
 print "/".join(str)-->aa/bb/cc  
 **splitlines**("keepend")【按照换行符切割】  
-**partition**:str.patition("sep")【只运行到第一次分割，返回三个对象：分割的子字符串、分隔符和剩余字符串】  
+**partition**:str.patition("sep")【只运行到第一次分割，返回三个对象：分割的子字符串、分隔符和剩余字符串】    
 **strip**("sep")/lstrip()/rstrip()【从字符串两端移除空白，也可移除相应的字符串】  
 **replace**：str.replace(old, new[, max])  
 str = "this is string example....wow!!! this is really string";  
