@@ -506,7 +506,7 @@ CRITICAL：一个严重的错误,这表明程序本身可能无法继续运行
 	【主manager】
 	QueueManager.register("get_task_queue",callable=lambda：task_queue)【register：BaseManager自带方法,将get_task_queue注册到manager中，并将其与task_queue关联】
 	QueueManager.register("get_result_queue",callable=lambda:result_queue)【需要分别设置get和put的queue】
-	m=QueueManager（address=（ip，port），authkey=）【address，authkey：BaseManager自带属性，设置连接地址和验证码】
+	m=QueueManager（address=（""，port），authkey=）【address，authkey：BaseManager自带属性，设置连接地址和验证码】【主机不用设置ip】
 	m.start()【启动Queue】
 	task=manager.get_task_queue()【设置manager中的代理序列】
 	result=manager.get_result_queue()
@@ -521,10 +521,6 @@ CRITICAL：一个严重的错误,这表明程序本身可能无法继续运行
 	n=task.get(timeout=)
 	put.result(obj)
 	
-	
-	
-	
-
 **threading模块**  
 	
 	local=threding.local()【创建全局Threadinglocal对象】
@@ -545,6 +541,25 @@ CRITICAL：一个严重的错误,这表明程序本身可能无法继续运行
 time.sleep(x)【将运行进程休眠x秒】
 t=time.time（）【当前时间，可用于时间加减运算】
 time.ctime()【返回当前时间】
+
+**datetime模块** 
+ 
+    datetime.datetime.now()【返回当前日期和时间，类型为datetime】  
+    datetime.datetime.strptime('2015-6-1 18:19:59', '%Y-%m-%d %H:%M:%S')【将字符串转换为datetime格式】  
+	obj.strftime('format')【将datetime转换为str格式】  
+    utc_dt=datetime.datetime.utcnow()【获得UTC时间】  
+    
+	datetime.datetime(y,m,d,h,min,sec)【构造时间，format：2015-04-19 12:20:00】  
+    obj.timestamp()【将datetime类型转化为timestamp类型】  
+    datetime.fromtimestamp(obj)【将timestamp转为datetime，与本地时间作转换】  
+    datetime.utcfromtimestamp(obj)【与utc时间作转换】  
+	tz=datetime.timezone(datetime.timedelta(hours=))【直接生成时区】【可用replace直接替换】
+    now-/+datetime.timedelta(days=,hours=)【时间计算，在timedelta的参数中填入计算量】  
+    
+    utc_dt=datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc)【设置UTC+0：00】
+    bj_dt=utc_dt.astimezone(timezone(timedelta(hours=8)))【转换时区】
+    m=datetime.timezone(datetime.timedelta(hours=8))【创建时区UTC+8:00】  
+    dt=datetime.datetime().now.replace(tzinfo=m)【强制设置UTC+8：00】  
 
 ## 对象操作 ##
 dir（obj）【获得操作该对象的所有方法和属性】
@@ -596,23 +611,32 @@ str.**maketrans()&translate（）**:
     string.ascii_lowercese  
     'abcdefghijklmnopqrstuvwxyz'
 
-**re模块**【正则表达式模块】  
+**re模块**【正则表达式模块】【Regular Expression】  
 **pattern格式：**  
 	. 【匹配除换行符之外的字符】  
 	\d【数字：0-9】  
 	\D【非数字】  
 	\w【单词字符:A-Za-z0-9】  
+	\s【匹配空格】  
 	*【匹配前一个字符0或无限次】  
 	+【匹配前一个字符1或无限次】  
-	{}【匹配前一个字符m次】  
-	^【匹配字符串开头】  
-	$【匹配字符串结尾】  
-	|【左右表达式任意匹配一个，先左后右】  
+	？【启用非贪婪匹配，当使用*和+时，使表达式尽可能少的匹配】
+	{}【匹配前一个字符m次】【{3,8}表示3-8个数字】  
+	[]【表示范围，[]内仅匹配一个数字或字符等，如[0-9a-z\_]】 
+	()【用于分组，之后用group()提取分组】 
+	^【匹配字符串开头，^\d表示以数字开头】  
+	$【匹配字符串结尾，\d$表示以数字结尾】  
+	^py$【仅匹配py】
+	|【左右表达式任意匹配一个，先左后右,如（P|p）ython】  
+	【特殊字符要用\进行转义，pattern使用r前缀避免内部转义】
 
-re.compile()【将正则表达式的字符串形式编译为Pattern实例，可以使用r不表达转义字符】
+re.match(pattern,obj)【判断obj是否符合pattern，符合返回match对象，不符合返回none】 
+pattern.match(obj) 【match的为另一种写法，pattern要经过compile】
+re.split(pattern,obj)【使用+】  
+re.compile()【将正则表达式的字符串形式编译为re对象，可以使用r不表达转义字符】  
 re.findall(pattern,str)【按照pattern开始进行匹配，并逐个返回字符串list，匹配多个】  
 re.search(pattern,str)【按照pattern，从左到右，找到即返回match对象，仅匹配一个】  
-re.group(0)【提出search出来的字符串，0表示全部，1，2，3表示第几个字符串】  
+re.groups(0)【提出search或match出来的字符串，1，2，3表示第几个字符串，空时提取全部】  
     
 **列表**  
 **count**:str.count(sub, start= 0,end=len(string))【返回sub在字符串中出现的次数】  
