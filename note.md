@@ -54,9 +54,14 @@ x[“name”]=[“a”,“b”，“c”]
 x[“occupation”]=[“d”，“e”，“f”]  
 x=dict()  
 x={“name”:[“a”，“b”，“c”],“occupation”:[“c”，“d”，“e”]}  
+x=dict([('a',1),('b',2)])  
 【可以在函数内部返回字典项后，在外部定义字典名】  
 d.get(“tos”,-1)【检查“tos”的key是否在dict中，不存在返回-1】  
 for key，value in x【字典键，值迭代】  
+x.clear【清除字典中的所有数据】  
+x.pop('a')【删除键和所对应的值】  
+x.popitem()【随机删除字典中的key和value】
+
 
 ----------
 
@@ -636,7 +641,7 @@ re.split(pattern,obj)【使用+】
 re.compile()【将正则表达式的字符串形式编译为re对象，可以使用r不表达转义字符】  
 re.findall(pattern,str)【按照pattern开始进行匹配，并逐个返回字符串list，匹配多个】  
 re.search(pattern,str)【按照pattern，从左到右，找到即返回match对象，仅匹配一个】  
-re.groups(0)【提出search或match出来的字符串，1，2，3表示第几个字符串，空时提取全部】  
+re.groups(0)【提出search或match出来的字符串，1，2，3表示第几个字符串，空时提取全部】【一定记得是groups不是group】
     
 **列表**  
 **count**:str.count(sub, start= 0,end=len(string))【返回sub在字符串中出现的次数】  
@@ -658,10 +663,42 @@ s.**issubset**(x)【集s是否是集x的子集，返回bool值】
 **clear**【清除集元素】 
 
 
- 
+## 其他模块 ##
+**collections模块**  
+	
+	【namedtuple】
+    point=colections.namedtuple("point",['x','y'])
+	p=point()
+	p.x【'point'指定类的名称，[x,y]指定类的内容数量，存入的数值可以当做属性来调用】
+	【由于tuple的不可变属性，在input后将数据存入namedtuple的类中更稳定】  
+    
+	【deque】
+	q=collections.deque(list)
+	q.popleft() / q.appendleft()
+	【高效删除和添加list中的元素】
+	
+	【defaultdict】
+	dd=collections.defaultdict(lambda: 'N/A')
+	【当查找的key不存在时返回N/A，而不是KeyError】
+
+	【OrderDict】
+	dd=collections.OrderDict([('a',1),('b',2)])
+	list(dd.keys())
+	【按照输入顺序储存dict中的key】
+	dd.popitem(last=False)【last为False时，先加入的先移除】
+	dd.move_to_end(key,last=Ture)【last为True时移到末尾，False时移到开头】
+
+	【Counter】
+	c=Counter()
+	for ch in "programming":
+		c[ch]=c[ch]+1
+	c
+	【Counter也是dict的一个子类，设定key的时候，默认key的value为0】
+	【Counter的默认排序是按照value降序排列】
+	
+	
 
 
-  
 1.用open和with打开的文件数据，需要用ReadLine或for对文件中的每一项数据进行赋值后进行读取。没读取前是一整块文件数据，python只能读分解的数据。  
 2.在while和if中的条件句，判断一个值是否等价（一样），使用==（不是=）。  
 3.定义函数后需要return，可以return多个结果，使用函数时也要用多个参数进行接收。  
