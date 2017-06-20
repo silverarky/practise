@@ -61,7 +61,6 @@ for key，value in x【字典键，值迭代】
 x.clear【清除字典中的所有数据】  
 x.pop('a')【删除键和所对应的值】  
 x.popitem()【随机删除字典中的key和value】
-x.['c']=3【字典中直接命名key并赋值】
 
 
 ----------
@@ -334,8 +333,6 @@ k=list（filter（f，[]））【f为返回bool值的函数，false时，filter�
 sorted（[],key=f,reverse=True）【key为函数,函数仅用作判断，输出的还是原列表中的元素。reverse反转顺序。sorted默认升序，字符串时按照先a后z，先大写后小写排序】
 ### 匿名函数 ###
 K=reduce(lambda x,y:x*y,[1,2,3,4,5])-->120【格式为lambda x：f，用于简单函数命名】  
-【在一些函数中要提供f，可用lambda x:x<=10或lambda c:c.upper()完成】  
-【lambda c:c.upper()相当于c=c.upper()】
 ### 偏函数 ###
     import functools
     int2=functools.partial(int,base=2)
@@ -684,8 +681,8 @@ s.**issubset**(x)【集s是否是集x的子集，返回bool值】
 	dd=collections.defaultdict(lambda: 'N/A')
 	【当查找的key不存在时返回N/A，而不是KeyError】
 
-	【OrderedDict】
-	dd=collections.OrderedDict([('a',1),('b',2)])
+	【OrderDict】
+	dd=collections.OrderDict([('a',1),('b',2)])
 	list(dd.keys())
 	【按照输入顺序储存dict中的key】
 	dd.popitem(last=False)【last为False时，先加入的先移除】
@@ -698,72 +695,8 @@ s.**issubset**(x)【集s是否是集x的子集，返回bool值】
 	c
 	【Counter也是dict的一个子类，设定key的时候，默认key的value为0】
 	【Counter的默认排序是按照value降序排列】
-
-**base64模块**【编码和解码】  
 	
-	import base64
-	base64.encode（）/base64.decode()【编码和解码文件，也可以对StringIO的数据进行编码】
-	base64.urlsafe_b64encode()/base64.url_b64decode()【编码和解码url】
-	base64.encodestring()/base64.decodestring()【编码和解码字符串】
-	base64.b64encode()/base64.b64decoding【通用】
-	【在编码的时候可能会出现结尾的'='消失的情况，解码的时候需要在后面重新加上】
-	【使用此解码和编码的时候，obj一定都是bytes对象，b'abcd'】
-	【解码和编码文件时的打开方式为'rb'】
-
-**struct模块**  
 	
-	import struct
-	struct.pack('>I',obj)【将任意数据类型变成bytes】
-	【>表示字节顺序是big-endian，也就是网络序;I表示4字节无符号整数;H表示2字节无符号整数;c表示1字节字符】
-	struct.unpack()【将byte类型转换为相应的数据类型】【返回按照pattern割分的tuple】
-	【’<ccIIIIIIHH‘  图像解码编码，
-	两个字节：'BM'表示Windows位图，'BA'表示OS/2位图；
-	一个4字节整数：表示位图大小；
-	一个4字节整数：保留位，始终为0；
-	一个4字节整数：实际图像的偏移量；
-	一个4字节整数：Header的字节数；
-	一个4字节整数：图像宽度；
-	一个4字节整数：图像高度；
-	一个2字节整数：始终为1；
-	一个2字节整数：颜色数。】
-	
-**hashlib模块**【单向计算防篡改】  
-	
-	md5=hashlib.md5()【MD5摘要算法】
-	sha1=hashlib.sha1()【SHA1摘要算法】
-	md5.update(obj.encode('utf-8'))【obj一定不是byte对象】
-	md5.update(obj1.encode('utf-8'))【数据量较大时可以分步update，结果相同】
-	print(md5.hexdigest())
-
-**itertools模块**【用作迭代器或者生成器】【直接返回的是可迭代对象，可用list或tuple将其返回】    
-	
-	import itertools
-
-	【count(start)】【自然数迭代】
-	for x in itertools.count(1):
-		print(x)-->1,2,3,4,5…
-	
-	【cycle(strobj)】【对象内循环迭代】
-	for x in itertools.cycle('ABS')
-		print(x)-->A,B,S,A,B,S…
-
-	【repeat('obj',repeat_num)】【对象循环迭代】
-	for x in itertools.repeat('A',3):
-		print(x)-->A,A,A
-
-	【takewhile(condition,obj)】【截取有限的迭代】【函数式最好是判断大小的,也可以用ord()进行比较】
-	ns=itertools.takewhile(lambda x:x<=10,itertools.count(1))
-
-	【chain(obj1,obj2)】【将两个对象连接成为迭代对象】
-
-	【groupby(obj，condition)】【将对象挑出来放在一起】【将对象分为key和group两个对象】
-	for key,group in itertools.groupby('AaaBBbcCAAa',lambda x:x.upper()):
-		print(key,list(group))
-		A ['A', 'a', 'a']
-		B ['B', 'B', 'b']【迭代中遇到的其他key算作其他组】
-		C ['c', 'C']
-		A ['A', 'A', 'a']【在次遇到和前面相同的key时，算作不同的组】
-
 
 
 1.用open和with打开的文件数据，需要用ReadLine或for对文件中的每一项数据进行赋值后进行读取。没读取前是一整块文件数据，python只能读分解的数据。  
@@ -775,5 +708,4 @@ s.**issubset**(x)【集s是否是集x的子集，返回bool值】
 7.打开文件后，使用其中一种read()类型函数（readline、readlines、read）时，不能使用另一种read()类型函数。重开文件后可重新使用。  
 8.[a-z][A-Z]表示大写字母和小写字母  
 9.创建类的时候要避免实例的属性暴露、随便修改，可以使用双下划线在__init__中定义限制属性，也可以使用@property装饰器将函数作为属性调用
-10.多次添加相同字符串时，可以直接raw+str*x
 
